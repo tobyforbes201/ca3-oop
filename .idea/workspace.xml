@@ -2,7 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="72ca1a02-32f7-4a2c-a69b-172e2301153a" name="Default Changelist" comment="test1">
+      <change afterPath="$PROJECT_DIR$/src/SimpleTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ca3/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ca3/SocialMediaPlatformTestApp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ca3/SocialMediaPlatformTestApp.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ca3/socialmedia/AccountIDNotRecognisedException.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ca3/socialmedia/AccountIDNotRecognisedException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ca3/socialmedia/BadMiniSocialMedia.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ca3/socialmedia/BadMiniSocialMedia.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ca3/socialmedia/BadSocialMedia.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ca3/socialmedia/BadSocialMedia.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ca3/socialmedia/HandleNotRecognisedException.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ca3/socialmedia/HandleNotRecognisedException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ca3/socialmedia/IllegalHandleException.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ca3/socialmedia/IllegalHandleException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ca3/socialmedia/InvalidHandleException.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ca3/socialmedia/InvalidHandleException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ca3/socialmedia/InvalidPostException.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ca3/socialmedia/InvalidPostException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ca3/socialmedia/MiniSocialMediaPlatform.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ca3/socialmedia/MiniSocialMediaPlatform.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ca3/socialmedia/NotActionablePostException.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ca3/socialmedia/NotActionablePostException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ca3/socialmedia/PostIDNotRecognisedException.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ca3/socialmedia/PostIDNotRecognisedException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ca3/socialmedia/SocialMediaPlatform.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ca3/socialmedia/SocialMediaPlatform.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/socialmedia/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/socialmedia/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/socialmedia/BadSocialMedia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/socialmedia/BadSocialMedia.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +47,14 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.SimpleTest">
+    <configuration name="SimpleTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="SimpleTest" />
+      <module name="ca3" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="SocialMediaPlatformTestApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="SocialMediaPlatformTestApp" />
       <module name="ca3" />
@@ -41,6 +64,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.SimpleTest" />
         <item itemvalue="Application.SocialMediaPlatformTestApp" />
       </list>
     </recent_temporary>
@@ -125,6 +149,7 @@
         <entry key="1" value="TOOL_WINDOW" />
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial project file" />

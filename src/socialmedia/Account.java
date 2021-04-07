@@ -10,9 +10,38 @@ public class Account {
     private ArrayList<Account> friends;
     private int id;
 
-    public Account(String handle, String description)
+    public Account(String handle, String description, int ID)
     {
         this.handle = handle;
+        this.description = description;
+        this.id = ID;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public ArrayList<Account> getFriends() {
+        return friends;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getHandle() {
+        return handle;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setHandle(String handle) {
+        this.handle = handle;
+    }
+
+    public void setDescription(String description) {
         this.description = description;
     }
 

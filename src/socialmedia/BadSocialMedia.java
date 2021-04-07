@@ -1,6 +1,7 @@
 package socialmedia;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * BadSocialMedia is a minimally compiling, but non-functioning implementor of
@@ -11,47 +12,106 @@ import java.io.IOException;
  */
 public class BadSocialMedia implements SocialMediaPlatform {
 
+	ArrayList<Account> accounts = new ArrayList<>();
+	int IDCounter = 0;
+
+
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
-		// TODO Auto-generated method stub
-		return 0;
+		if(handle == null || handle.length() > 30 || handle.contains(" ")){
+			throw new InvalidHandleException();
+		}
+		for(Account account : accounts){
+			if(account.getHandle().equals(handle)){
+				throw new IllegalHandleException();
+			}
+		}
+
+		Account newAccount = new Account(handle, null, IDCounter++);
+		accounts.add(newAccount);
+		return IDCounter;
 	}
 
 	@Override
 	public int createAccount(String handle, String description) throws IllegalHandleException, InvalidHandleException {
-		// TODO Auto-generated method stub
-		return 0;
+		if(handle == null || handle.length() > 30 || handle.contains(" ")){
+			throw new InvalidHandleException();
+		}
+		for(Account account : accounts){
+			if(account.getHandle().equals(handle)){
+				throw new IllegalHandleException();
+			}
+		}
+
+		Account newAccount = new Account(handle, null, IDCounter++);
+		accounts.add(newAccount);
+		return IDCounter;
 	}
 
 	@Override
 	public void removeAccount(int id) throws AccountIDNotRecognisedException {
-		// TODO Auto-generated method stub
-
+		for(Account account : accounts){
+			if(account.getId() == id){
+				accounts.remove(account);
+				return;
+			}
+		}
+		throw new AccountIDNotRecognisedException();
 	}
 
 	@Override
 	public void removeAccount(String handle) throws HandleNotRecognisedException {
-		// TODO Auto-generated method stub
-
+		for(Account account : accounts){
+			if(account.getHandle().equals(handle)){
+				accounts.remove(account);
+				return;
+			}
+		}
+		throw new HandleNotRecognisedException();
 	}
 
 	@Override
 	public void changeAccountHandle(String oldHandle, String newHandle)
 			throws HandleNotRecognisedException, IllegalHandleException, InvalidHandleException {
-		// TODO Auto-generated method stub
-
+		if(newHandle == null || newHandle.length() > 30 || newHandle.contains(" ")){
+			throw new InvalidHandleException();
+		}
+		for(Account account : accounts){
+			if(account.getHandle().equals(newHandle)){
+				throw new IllegalHandleException();
+			}
+		}
+		for(Account account : accounts){
+			if(account.getHandle().equals(newHandle)){
+				account.setHandle(newHandle);
+				return;
+			}
+		}
+		throw new HandleNotRecognisedException();
 	}
 
 	@Override
 	public void updateAccountDescription(String handle, String description) throws HandleNotRecognisedException {
-		// TODO Auto-generated method stub
-
+		for(Account account : accounts){
+			if(account.getHandle().equals(handle)){
+				account.setDescription(description);
+				return;
+			}
+		}
+		throw new HandleNotRecognisedException();
 	}
 
 	@Override
 	public String showAccount(String handle) throws HandleNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		for(Account account : accounts){
+			if(account.getHandle().equals(handle)){
+				return "<pre>\nID: " + account.getId() + "\nHandle: " + account.getHandle() + "\nDescription: "
+						+ account.getDescription() + "\nPost count: [total number of posts, including endorsements and " +
+						"replies]" + "\nEndorse count: [sum of endorsements received by each post of this account]" +
+						"\n</pre>"; //todo fill in final fields
+			}
+		}
+		throw new HandleNotRecognisedException();
 	}
 
 	@Override
