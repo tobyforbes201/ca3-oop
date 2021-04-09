@@ -17,9 +17,6 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	int IDCounter = 0;
 	int postIDCounter = 0;
 
-	ArrayList<Comment> comments = new ArrayList<>();
-	int CommentIDCounter = 0;
-
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
 		if(handle == null || handle.length() > 30 || handle.contains(" ")){
@@ -132,7 +129,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			throw new HandleNotRecognisedException();
 		}
 
-		if(message == " " || message.length() > 100)
+		if(message.equals(" ") || message.length() > 100)
 		{
 			throw new InvalidPostException();
 		}
@@ -171,7 +168,8 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		}
 
 		Comment newComment = new Comment(handle, message, id);
-		comments.add(newComment);
+		newComment.setIsComment(true);
+		posts.add(newComment);
 
 		return 0;
 	}

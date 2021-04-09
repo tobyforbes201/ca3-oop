@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="72ca1a02-32f7-4a2c-a69b-172e2301153a" name="Default Changelist" comment="test1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ca3/socialmedia/Account.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ca3/socialmedia/Account.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ca3/socialmedia/BadSocialMedia.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ca3/socialmedia/BadSocialMedia.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/socialmedia/BadMiniSocialMedia.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/socialmedia/BadSocialMedia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/socialmedia/BadSocialMedia.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
