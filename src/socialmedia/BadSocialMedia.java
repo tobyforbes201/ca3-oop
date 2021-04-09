@@ -13,7 +13,9 @@ import java.util.ArrayList;
 public class BadSocialMedia implements SocialMediaPlatform {
 
 	ArrayList<Account> accounts = new ArrayList<>();
+	ArrayList<Post> posts = new ArrayList<>();
 	int IDCounter = 0;
+	int postIDCounter = 0;
 
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
@@ -115,8 +117,27 @@ public class BadSocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public int createPost(String handle, String message) throws HandleNotRecognisedException, InvalidPostException {
-		// TODO Auto-generated method stub
-		return 0;
+		boolean isRealHandle = false;
+		for(Account account : accounts){
+			if(account.getHandle().equals(handle)){
+				isRealHandle = true;
+			}
+		}
+		//if handle is not found throw exception
+		if(!isRealHandle)
+		{
+			throw new HandleNotRecognisedException();
+		}
+
+		if(message == " " || message.length() > 100)
+		{
+			throw new InvalidPostException();
+		}
+
+
+		posts.add(new Post(handle,message, postIDCounter++));
+
+		return postIDCounter;
 	}
 
 	@Override
