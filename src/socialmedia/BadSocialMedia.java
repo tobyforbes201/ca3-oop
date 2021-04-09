@@ -15,7 +15,6 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	ArrayList<Account> accounts = new ArrayList<>();
 	int IDCounter = 0;
 
-
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
 		if(handle == null || handle.length() > 30 || handle.contains(" ")){
