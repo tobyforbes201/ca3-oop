@@ -3,13 +3,10 @@ package socialmedia;
 import java.util.ArrayList;
 
 public class Post {
-    private String handle; //the name of the user, or the title of the post?
+    private String handle; //the name of the user
     private String message;
     private int id;
-    private ArrayList<Comment> comments;
-    private boolean isOriginal = false;
-    private boolean isEndorsement = false;
-    private boolean isComment = false;
+    private ArrayList<Integer> children;
 
     public Post(String handle, String message,int id)
     {
@@ -17,32 +14,8 @@ public class Post {
         this.message = message;
         this.id = id;
 
-        setIsOriginal(true);
     }
 
-    public boolean getIsOriginal() {
-        return isOriginal;
-    }
-
-    public void setIsOriginal(boolean isOriginal) {
-        this.isOriginal = isOriginal;
-    }
-
-    public void setIsComment(boolean comment) {
-        isComment = comment;
-    }
-
-    public boolean getIsComment() {
-        return isComment;
-    }
-
-    public void setIsEndorsement(boolean endorsement) {
-        isEndorsement = endorsement;
-    }
-
-    public boolean getIsEndorsement() {
-        return isEndorsement;
-    }
 
     public int getId() {
         return id;
@@ -56,11 +29,11 @@ public class Post {
         return message;
     }
 
-    public void addComment(Comment comment) {
-        comments.add(comment);
+    public void addChild(int child) {
+        children.add(child);
     }
 
-    public void removeComment(Comment comment) {
-        comments.remove(comment);
+    public void removeChild(int child) {
+        children.remove(child);
     }
 }

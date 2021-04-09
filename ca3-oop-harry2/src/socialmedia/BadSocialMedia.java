@@ -117,19 +117,14 @@ public class BadSocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public int createPost(String handle, String message) throws HandleNotRecognisedException, InvalidPostException {
-		boolean isRealHandle = false;
-		for(Account account : accounts){
-			if(account.getHandle().equals(handle)){
-				isRealHandle = true;
-			}
-		}
+
 		//if handle is not found throw exception
-		if(!isRealHandle)
+		if(!isRealHandle(handle))
 		{
 			throw new HandleNotRecognisedException();
 		}
 
-		if(message == " " || message.length() > 100)
+		if(!isMessageAccepted(message))
 		{
 			throw new InvalidPostException();
 		}
@@ -140,11 +135,61 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		return postIDCounter;
 	}
 
+	private boolean isRealHandle(String handle)
+	{
+		for(Account account : accounts){
+			if(account.getHandle().equals(handle)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isMessageAccepted(String message)
+	{
+		if(message != " " && message.length() <= 100)
+		{
+			return true;
+		}
+		return false;
+	}
+
+
 	@Override
 	public int endorsePost(String handle, int id)
 			throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
-		// TODO Auto-generated method stub
-		return 0;
+
+		String message;
+
+		if(!isRealHandle(handle))
+		{
+			throw new HandleNotRecognisedException();
+		}
+
+		//find the post being endorsed
+		for(Post post:posts)
+		{
+			if(post.getId() == id)
+			{
+				if(post instanceof Endorsement)
+				{
+					throw new NotActionablePostException();
+				}
+				else
+				{
+					message = post.getMessage();
+
+					posts.add(new Endorsement(handle,message, postIDCounter++,id));
+					post.addChild(postIDCounter);
+
+					return postIDCounter;
+
+				}
+			}
+		}
+		//if no post could be found then throw an exception
+		throw new PostIDNotRecognisedException();
+
 	}
 
 	@Override
