@@ -1,6 +1,6 @@
 package socialmedia;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -16,9 +16,6 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	ArrayList<Post> posts = new ArrayList<>();
 	int IDCounter = 0;
 	int postIDCounter = 0;
-
-	ArrayList<Comment> comments = new ArrayList<>();
-	int CommentIDCounter = 0;
 
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
@@ -132,11 +129,10 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			throw new HandleNotRecognisedException();
 		}
 
-		if(message == " " || message.length() > 100)
+		if(message.equals(" ") || message.length() > 100)
 		{
 			throw new InvalidPostException();
 		}
-
 
 		posts.add(new Post(handle,message, postIDCounter++));
 
@@ -170,10 +166,16 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			throw new InvalidPostException();
 		}
 
-		Comment newComment = new Comment(handle, message, id);
-		comments.add(newComment);
+		Comment newComment = new Comment(handle, message, postIDCounter++, id);
+		posts.add(newComment);
 
-		return 0;
+		for(Post post : posts){
+			if(post.getId() == id){
+				//todo post.addChild(postIDCounter)
+			}
+		}
+
+		return postIDCounter;
 	}
 
 	@Override
@@ -214,8 +216,13 @@ public class BadSocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public int getTotalCommentPosts() {
-		// TODO Auto-generated method stub
-		return 0;
+		int counter = 0;
+		for(Post post : posts){
+			if(post instanceof Comment){
+				counter++;
+			}
+		}
+		return counter;
 	}
 
 	@Override
@@ -238,14 +245,43 @@ public class BadSocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public void savePlatform(String filename) throws IOException {
-		// TODO Auto-generated method stub
+		try {
+			FileOutputStream fileOut = new FileOutputStream(filename);
+			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+			ArrayList<Object> output = new ArrayList<>();
+			output.add(accounts);
+			output.add(posts);
+			output.add(IDCounter);
+			output.add(postIDCounter);
+			objectOut.writeObject(output);
+			objectOut.close();
+		} catch (FileNotFoundException exception) {
+			exception.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
 	@Override
 	public void loadPlatform(String filename) throws IOException, ClassNotFoundException {
-		// TODO Auto-generated method stub
+		ArrayList<Object> read = null;
+		try {
+			FileInputStream fileIn = new FileInputStream(filename);
+			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+			read = (ArrayList<Object>) objectIn.readObject();
+			objectIn.close();
+		} catch (FileNotFoundException exception) {
+			exception.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 
+		accounts = (ArrayList<Account>) read.get(0);
+		posts = (ArrayList<Post>) read.get(1);
+		IDCounter = (int) read.get(2);
+		postIDCounter = (int) read.get(3);
 	}
-
 }

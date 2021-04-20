@@ -7,9 +7,6 @@ public class Post {
     private String message;
     private int id;
     private ArrayList<Comment> comments;
-    private boolean isOriginal = false;
-    private boolean isEndorsement = false;
-    private boolean isComment = false;
 
     public Post(String handle, String message,int id)
     {
@@ -17,31 +14,6 @@ public class Post {
         this.message = message;
         this.id = id;
 
-        setIsOriginal(true);
-    }
-
-    public boolean getIsOriginal() {
-        return isOriginal;
-    }
-
-    public void setIsOriginal(boolean isOriginal) {
-        this.isOriginal = isOriginal;
-    }
-
-    public void setIsComment(boolean comment) {
-        isComment = comment;
-    }
-
-    public boolean getIsComment() {
-        return isComment;
-    }
-
-    public void setIsEndorsement(boolean endorsement) {
-        isEndorsement = endorsement;
-    }
-
-    public boolean getIsEndorsement() {
-        return isEndorsement;
     }
 
     public int getId() {
