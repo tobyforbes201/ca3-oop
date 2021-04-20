@@ -227,8 +227,15 @@ public class BadSocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public int getMostEndorsedPost() {
-		// TODO Auto-generated method stub
-		return 0;
+		int greatestNum = 0;
+		Post mostEndorsed = posts.get(0);
+		for(Post post : posts){
+			if(post.getChildren().size() > greatestNum){
+				greatestNum = post.getChildren().size();
+				mostEndorsed = post;
+			}
+		}
+		return mostEndorsed.getId();
 	}
 
 	@Override
@@ -239,8 +246,10 @@ public class BadSocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public void erasePlatform() {
-		// TODO Auto-generated method stub
-
+		accounts.clear();
+		posts.clear();
+		IDCounter = 0;
+		postIDCounter = 0;
 	}
 
 	@Override

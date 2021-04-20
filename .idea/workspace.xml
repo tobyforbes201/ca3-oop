@@ -3,6 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="72ca1a02-32f7-4a2c-a69b-172e2301153a" name="Default Changelist" comment="idk">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/socialmedia/BadSocialMedia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/socialmedia/BadSocialMedia.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/socialmedia/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/socialmedia/Comment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/socialmedia/Endorsement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/socialmedia/Endorsement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/socialmedia/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/socialmedia/Post.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

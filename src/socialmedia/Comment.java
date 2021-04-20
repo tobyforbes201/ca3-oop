@@ -2,10 +2,15 @@ package socialmedia;
 
 public class Comment extends Post {
 
-    private int parentID; // the id of the post being commented on
+    private int id; // the id of the post being commented on
+    private String handle; //user handle
+    private String message;
+    private int parentId;
 
-    public Comment(String handle, String message, int id, int parentID) {
+
+    public Comment(String handle, String message, int id, int parentId) {
         super(handle, message, id);
-        this.parentID = parentID;
+
+        this.parentId = parentId;
     }
 }

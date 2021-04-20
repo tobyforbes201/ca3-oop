@@ -3,10 +3,10 @@ package socialmedia;
 import java.util.ArrayList;
 
 public class Post {
-    private String handle; //the name of the user, or the title of the post?
+    private String handle; //the name of the user
     private String message;
     private int id;
-    private ArrayList<Comment> comments;
+    private ArrayList<Integer> children;
 
     public Post(String handle, String message,int id)
     {
@@ -28,11 +28,15 @@ public class Post {
         return message;
     }
 
-    public void addComment(Comment comment) {
-        comments.add(comment);
+    public ArrayList<Integer> getChildren() {
+        return children;
     }
 
-    public void removeComment(Comment comment) {
-        comments.remove(comment);
+    public void addChild(int child) {
+        children.add(child);
+    }
+
+    public void removeChild(int child) {
+        children.remove(child);
     }
 }
