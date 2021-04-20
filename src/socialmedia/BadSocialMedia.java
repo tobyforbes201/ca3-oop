@@ -204,14 +204,24 @@ public class BadSocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public int getTotalOriginalPosts() {
-		// TODO Auto-generated method stub
-		return 0;
+		int counter = 0;
+		for(Post post : posts){
+			if(!(post instanceof Endorsement) && !(post instanceof Comment)){
+				counter++;
+			}
+		}
+		return counter;
 	}
 
 	@Override
 	public int getTotalEndorsmentPosts() {
-		// TODO Auto-generated method stub
-		return 0;
+		int counter = 0;
+		for(Post post : posts){
+			if(post instanceof Endorsement){
+				counter++;
+			}
+		}
+		return counter;
 	}
 
 	@Override
