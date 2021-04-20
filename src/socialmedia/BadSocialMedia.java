@@ -13,7 +13,9 @@ import java.util.ArrayList;
 public class BadSocialMedia implements SocialMediaPlatform {
 
 	ArrayList<Account> accounts = new ArrayList<>();
+	ArrayList<Post> posts = new ArrayList<>();
 	int IDCounter = 0;
+	int postIDCounter = 0;
 
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
@@ -115,15 +117,79 @@ public class BadSocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public int createPost(String handle, String message) throws HandleNotRecognisedException, InvalidPostException {
-		// TODO Auto-generated method stub
-		return 0;
+
+		//if handle is not found throw exception
+		if(!isRealHandle(handle))
+		{
+			throw new HandleNotRecognisedException();
+		}
+
+		if(!isMessageAccepted(message))
+		{
+			throw new InvalidPostException();
+		}
+
+
+		posts.add(new Post(handle,message, postIDCounter++));
+
+		return postIDCounter;
 	}
+
+	private boolean isRealHandle(String handle)
+	{
+		for(Account account : accounts){
+			if(account.getHandle().equals(handle)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isMessageAccepted(String message)
+	{
+		if(message != " " && message.length() <= 100)
+		{
+			return true;
+		}
+		return false;
+	}
+
 
 	@Override
 	public int endorsePost(String handle, int id)
 			throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
-		// TODO Auto-generated method stub
-		return 0;
+
+		String message;
+
+		if(!isRealHandle(handle))
+		{
+			throw new HandleNotRecognisedException();
+		}
+
+		//find the post being endorsed
+		for(Post post:posts)
+		{
+			if(post.getId() == id)
+			{
+				if(post instanceof Endorsement)
+				{
+					throw new NotActionablePostException();
+				}
+				else
+				{
+					message = post.getMessage();
+
+					posts.add(new Endorsement(handle,message, postIDCounter++,id));
+					post.addChild(postIDCounter);
+
+					return postIDCounter;
+
+				}
+			}
+		}
+		//if no post could be found then throw an exception
+		throw new PostIDNotRecognisedException();
+
 	}
 
 	@Override
