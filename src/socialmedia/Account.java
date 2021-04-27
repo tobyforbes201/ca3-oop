@@ -9,12 +9,26 @@ public class Account {
     private String password;
     private ArrayList<Account> friends;
     private int id;
+    private int endorsementNum;
 
     public Account(String handle, String description, int ID)
     {
         this.handle = handle;
         this.description = description;
         this.id = ID;
+        this.endorsementNum = 0;
+    }
+
+    public int getEndorsementNum() {
+        return endorsementNum;
+    }
+
+    public void setEndorsementNum(int endorsementNum) {
+        this.endorsementNum = endorsementNum;
+    }
+
+    public void changeEndorsementNum(int change) {
+        this.endorsementNum = this.endorsementNum + change;
     }
 
     public String getDescription() {

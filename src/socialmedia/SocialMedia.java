@@ -2,6 +2,8 @@ package socialmedia;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * BadSocialMedia is a minimally compiling, but non-functioning implementor of
@@ -10,7 +12,7 @@ import java.util.ArrayList;
  * @author Diogo Pacheco
  * @version 1.0
  */
-public class BadSocialMedia implements SocialMediaPlatform {
+public class SocialMedia implements SocialMediaPlatform {
 
 	ArrayList<Account> accounts = new ArrayList<>();
 	ArrayList<Post> posts = new ArrayList<>();
@@ -27,8 +29,8 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				throw new IllegalHandleException();
 			}
 		}
-
-		Account newAccount = new Account(handle, null, IDCounter++);
+		IDCounter++;
+		Account newAccount = new Account(handle, null, IDCounter);
 		accounts.add(newAccount);
 		return IDCounter;
 	}
@@ -43,8 +45,8 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				throw new IllegalHandleException();
 			}
 		}
-
-		Account newAccount = new Account(handle, null, IDCounter++);
+		IDCounter++;
+		Account newAccount = new Account(handle, null, IDCounter);
 		accounts.add(newAccount);
 		return IDCounter;
 	}
@@ -128,12 +130,16 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		{
 			throw new InvalidPostException();
 		}
-
-		posts.add(new Post(handle,message, postIDCounter++));
-
+		postIDCounter++;
+		posts.add(new Post(handle,message, postIDCounter));
 		return postIDCounter;
 	}
 
+	/**
+	 * checks if a given handle belongs to any of the accounts
+	 * @param handle account's handle
+	 * @return true or false
+	 */
 	private boolean isRealHandle(String handle)
 	{
 		for(Account account : accounts){
@@ -144,6 +150,11 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		return false;
 	}
 
+	/**
+	 * A validity checker for messages
+	 * @param message The string being checked
+	 * @return true if valid, false if not
+	 */
 	private boolean isMessageAccepted(String message)
 	{
 		if(message != " " && message.length() <= 100)
@@ -177,9 +188,23 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				else
 				{
 					message = post.getMessage();
-
-					posts.add(new Endorsement(handle,message, postIDCounter++,id));
+					postIDCounter++;
+					posts.add(new Endorsement(handle,message, postIDCounter,id));
 					post.addChild(postIDCounter);
+
+					boolean accountFound = false;
+					for (Account account: accounts)
+					{
+						if (account.getHandle().equals(post.getHandle()))
+						{
+							accountFound = true;
+							account.changeEndorsementNum(1);
+						}
+					}
+					if (!accountFound)
+					{
+						throw new HandleNotRecognisedException();
+					}
 
 					return postIDCounter;
 
@@ -191,55 +216,150 @@ public class BadSocialMedia implements SocialMediaPlatform {
 
 	}
 
+	public void checkAccount(String handle) throws HandleNotRecognisedException {
+		for(Account account : accounts){
+			if(account.getHandle().equals(handle)){
+				return;
+			}
+		}
+		throw new HandleNotRecognisedException();
+	}
+
+	public void checkId(int id) throws NotActionablePostException, PostIDNotRecognisedException {
+		for(Post post : posts){
+			if(post.getId() == id){
+				if(post instanceof Endorsement)
+				{
+					throw new NotActionablePostException();
+				}
+				return;
+			}
+		}
+		throw new PostIDNotRecognisedException();
+	}
+
 	@Override
 	public int commentPost(String handle, int id, String message) throws HandleNotRecognisedException,
 			PostIDNotRecognisedException, NotActionablePostException, InvalidPostException {
-		for(Account account : accounts){
-			if(account.getHandle().equals(handle)){
-				break;
-			}
-			throw new HandleNotRecognisedException();
-		}
-		for(Post post : posts){
-			if(post.getId() == id){
-				//todo if post is endorsement return NotActionablePostException
-				break;
-			}
-			throw new PostIDNotRecognisedException();
-		}
+		checkAccount(handle);
+		checkId(id);
 		if(message == null || message.length() > 100){
 			throw new InvalidPostException();
 		}
-
-		Comment newComment = new Comment(handle, message, postIDCounter++, id);
+		postIDCounter++;
+		Comment newComment = new Comment(handle, message, postIDCounter, id);
 		posts.add(newComment);
 
 		for(Post post : posts){
 			if(post.getId() == id){
-				//todo post.addChild(postIDCounter)
+				posts.add(newComment);
+				post.addChild(postIDCounter);
+				break;
 			}
 		}
 
 		return postIDCounter;
 	}
 
+	public String toString(Post inputPost) {
+		int numEndorsements = 0;
+		int numComments = 0;
+		for(int child : inputPost.getChildren()){
+			for(Post post : posts){
+				if(post.getId() == child){
+					if(post instanceof Comment){
+						numComments++;
+					}
+					else if(post instanceof Endorsement){
+						numEndorsements++;
+					}
+				}
+			}
+		}
+		return "ID: " + inputPost.getId() + "\nAccount: " + inputPost.getHandle() + "\nNo. endorsements: " +
+				numEndorsements + " | No. comments: " + numComments + "\n" + inputPost.getMessage();
+	}
+
 	@Override
 	public void deletePost(int id) throws PostIDNotRecognisedException {
-		// TODO Auto-generated method stub
-
+		boolean postFound = false;
+		boolean childPostFound;
+		for (Post post: posts)
+		{
+			if (id == post.getId())
+			{
+				postFound = true;
+				post.setMessage(null); //set the message to blank
+				for (int child : post.getChildren())
+				{
+					childPostFound = false;
+					for (Post childPost: posts)
+					{
+						childPostFound = true;
+						if (child == childPost.getId() && childPost instanceof Endorsement)
+						{
+							childPost.setMessage(null);
+							for (Account account: accounts)
+							{
+								if (account.getHandle().equals(post.getHandle()))
+								{
+									account.changeEndorsementNum(-1);
+								}
+							}
+						}
+					}
+					if (!childPostFound)
+					{
+						throw new PostIDNotRecognisedException();
+					}
+				}
+			}
+		}
+		if(!postFound)
+		{
+			throw new PostIDNotRecognisedException();
+		}
 	}
 
 	@Override
 	public String showIndividualPost(int id) throws PostIDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		for (Post post: posts)
+		{
+			if (post.getId() == id)
+			{
+				return toString(post);
+			}
+		}
+		throw new PostIDNotRecognisedException();
+	}
+
+	public Post getPost(int id) throws PostIDNotRecognisedException {
+		for(Post post : posts) {
+			if (post.getId() == id) {
+				return post;
+			}
+		}
+		throw new PostIDNotRecognisedException();
 	}
 
 	@Override
 	public StringBuilder showPostChildrenDetails(int id)
 			throws PostIDNotRecognisedException, NotActionablePostException {
-		// TODO Auto-generated method stub
+		if(getPost(id) instanceof Endorsement){
+			throw new NotActionablePostException();
+		}
+		builder(getPost(id), new StringBuilder());
 		return null;
+	}
+
+	public StringBuilder builder(Post post, StringBuilder string) throws PostIDNotRecognisedException {
+		if(post instanceof Endorsement){
+			return string;
+		}
+		for(int child : post.getChildren()){
+			builder(getPost(child), string.append(post.toString()));
+		}
+		return string;
 	}
 
 	@Override
@@ -295,8 +415,18 @@ public class BadSocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public int getMostEndorsedAccount() {
-		// TODO Auto-generated method stub
-		return 0;
+		//default values
+		int mostEndorsedId = 0;
+		int mostEndorsements = -1;
+		for (Account account: accounts)
+		{
+			if(account.getEndorsementNum() > mostEndorsements)
+			{
+				mostEndorsedId = account.getId();
+				mostEndorsements = account.getEndorsementNum();
+			}
+		}
+		return mostEndorsedId;
 	}
 
 	@Override
@@ -348,4 +478,5 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		IDCounter = (int) read.get(2);
 		postIDCounter = (int) read.get(3);
 	}
+
 }

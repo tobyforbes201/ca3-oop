@@ -6,7 +6,7 @@ public class Post {
     private String handle; //the name of the user
     private String message;
     private int id;
-    private ArrayList<Integer> children;
+    private ArrayList<Integer> children = new ArrayList<>();
 
     public Post(String handle, String message,int id)
     {
@@ -26,6 +26,10 @@ public class Post {
 
     public String getMessage() {
         return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public ArrayList<Integer> getChildren() {
