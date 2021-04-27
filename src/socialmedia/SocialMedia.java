@@ -276,7 +276,7 @@ public class SocialMedia implements SocialMediaPlatform {
 				}
 			}
 		}
-		return "ID: " + inputPost.getId() + "\nAccount: " + inputPost.getHandle() + "\nNo. endorsements: " +
+		return "\nID: " + inputPost.getId() + "\nAccount: " + inputPost.getHandle() + "\nNo. endorsements: " +
 				numEndorsements + " | No. comments: " + numComments + "\n" + inputPost.getMessage();
 	}
 
@@ -345,11 +345,11 @@ public class SocialMedia implements SocialMediaPlatform {
 	@Override
 	public StringBuilder showPostChildrenDetails(int id)
 			throws PostIDNotRecognisedException, NotActionablePostException {
+		System.out.println(posts.get(0));
 		if(getPost(id) instanceof Endorsement){
 			throw new NotActionablePostException();
 		}
-		builder(getPost(id), new StringBuilder());
-		return null;
+		return builder(getPost(id), new StringBuilder());
 	}
 
 	public StringBuilder builder(Post post, StringBuilder string) throws PostIDNotRecognisedException {
@@ -357,7 +357,10 @@ public class SocialMedia implements SocialMediaPlatform {
 			return string;
 		}
 		for(int child : post.getChildren()){
-			builder(getPost(child), string.append(post.toString()));
+			builder(getPost(child), string.append(toString(post)));
+		}
+		if(post.getChildren().size() == 0){
+			string.append(toString(post));
 		}
 		return string;
 	}
