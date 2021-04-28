@@ -106,12 +106,18 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public String showAccount(String handle) throws HandleNotRecognisedException {
+		int totalPosts = 0;
+		for(Post post : posts){
+			if(post.getHandle().equals(handle)){
+				totalPosts++;
+			}
+		}
+
 		for(Account account : accounts){
 			if(account.getHandle().equals(handle)){
-				return "<pre>\nID: " + account.getId() + "\nHandle: " + account.getHandle() + "\nDescription: "
-						+ account.getDescription() + "\nPost count: [total number of posts, including endorsements and " +
-						"replies]" + "\nEndorse count: [sum of endorsements received by each post of this account]" +
-						"\n</pre>"; //todo fill in final fields
+				return "\nID: " + account.getId() + "\nHandle: " + account.getHandle() + "\nDescription: "
+						+ account.getDescription() + "\nPost count: " + totalPosts + "\nEndorse count: " +
+						account.getEndorsementNum() + "\n";
 			}
 		}
 		throw new HandleNotRecognisedException();

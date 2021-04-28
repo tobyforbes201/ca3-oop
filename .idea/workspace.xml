@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="72ca1a02-32f7-4a2c-a69b-172e2301153a" name="Default Changelist" comment="idk">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ca3/SimpleTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ca3/SimpleTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SimpleTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SimpleTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/socialmedia/SocialMedia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/socialmedia/SocialMedia.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -129,7 +127,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619551467129</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="idk">
+      <created>1619641472325</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1619641472325</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
