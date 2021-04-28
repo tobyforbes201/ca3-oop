@@ -252,7 +252,6 @@ public class SocialMedia implements SocialMediaPlatform {
 
 		for(Post post : posts){
 			if(post.getId() == id){
-				posts.add(newComment);
 				post.addChild(postIDCounter);
 				break;
 			}
@@ -261,9 +260,15 @@ public class SocialMedia implements SocialMediaPlatform {
 		return postIDCounter;
 	}
 
-	public String toString(Post inputPost) {
+	public String toString(Post inputPost, int indents) {
 		int numEndorsements = 0;
 		int numComments = 0;
+		StringBuilder tabs = new StringBuilder();
+
+		tabs.append("\n");
+		for(int i = 0; i<indents; i++){
+			tabs.append("\t");
+		}
 		for(int child : inputPost.getChildren()){
 			for(Post post : posts){
 				if(post.getId() == child){
@@ -276,8 +281,8 @@ public class SocialMedia implements SocialMediaPlatform {
 				}
 			}
 		}
-		return "\nID: " + inputPost.getId() + "\nAccount: " + inputPost.getHandle() + "\nNo. endorsements: " +
-				numEndorsements + " | No. comments: " + numComments + "\n" + inputPost.getMessage();
+		return tabs + "ID: " + inputPost.getId() + tabs + "Account: " + inputPost.getHandle() + tabs + "No. endorsements: " +
+				numEndorsements + " | No. comments: " + numComments + tabs + inputPost.getMessage();
 	}
 
 	@Override
@@ -327,7 +332,7 @@ public class SocialMedia implements SocialMediaPlatform {
 		{
 			if (post.getId() == id)
 			{
-				return toString(post);
+				return toString(post, 0);
 			}
 		}
 		throw new PostIDNotRecognisedException();
@@ -349,18 +354,18 @@ public class SocialMedia implements SocialMediaPlatform {
 		if(getPost(id) instanceof Endorsement){
 			throw new NotActionablePostException();
 		}
-		return builder(getPost(id), new StringBuilder());
+		return builder(getPost(id), new StringBuilder(), 0);
 	}
 
-	public StringBuilder builder(Post post, StringBuilder string) throws PostIDNotRecognisedException {
+	public StringBuilder builder(Post post, StringBuilder string, int indent) throws PostIDNotRecognisedException {
 		if(post instanceof Endorsement){
 			return string;
 		}
 		for(int child : post.getChildren()){
-			builder(getPost(child), string.append(toString(post)));
+			builder(getPost(child), string.append(toString(post, indent)), (indent + 1));
 		}
 		if(post.getChildren().size() == 0){
-			string.append(toString(post));
+			string.append(toString(post, indent));
 		}
 		return string;
 	}

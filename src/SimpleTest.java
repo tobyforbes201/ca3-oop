@@ -11,7 +11,10 @@ public class SimpleTest {
         System.out.println(platform.createAccount("Toby2"));
         int postid = platform.createPost("Toby", "OG Post");
         System.out.println(postid);
-        System.out.println(platform.commentPost("Toby2", postid, "wtf"));
+        int commentid = platform.commentPost("Toby2", postid, "wtf");
+        System.out.println(commentid);
+        System.out.println(platform.commentPost("Toby2", commentid, "part2"));
+        System.out.println(platform.commentPost("Toby2", postid, "wtf2"));
         System.out.println(platform.showPostChildrenDetails(postid));
     }
 }
