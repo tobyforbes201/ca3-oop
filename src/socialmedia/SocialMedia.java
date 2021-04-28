@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+//todo complete log!
+
 /**
  * BadSocialMedia is a minimally compiling, but non-functioning implementor of
  * the SocialMediaPlatform interface.
@@ -163,7 +165,7 @@ public class SocialMedia implements SocialMediaPlatform {
 	 */
 	private boolean isMessageAccepted(String message)
 	{
-		if(message != " " && message.length() <= 100)
+		if(message != " " && message.length() <= 100) //todo not correct blank checking
 		{
 			return true;
 		}
@@ -269,11 +271,21 @@ public class SocialMedia implements SocialMediaPlatform {
 	public String toString(Post inputPost, int indents) {
 		int numEndorsements = 0;
 		int numComments = 0;
+		String part1 = "";
 		StringBuilder tabs = new StringBuilder();
+		StringBuilder tabsminus = new StringBuilder();
+
+		if(indents>0){
+			part1 = "|";
+		}
 
 		tabs.append("\n");
 		for(int i = 0; i<indents; i++){
 			tabs.append("\t");
+		}
+		tabsminus.append("\n");
+		for(int i = 1; i<indents; i++){
+			tabsminus.append("\t");
 		}
 		for(int child : inputPost.getChildren()){
 			for(Post post : posts){
@@ -287,7 +299,7 @@ public class SocialMedia implements SocialMediaPlatform {
 				}
 			}
 		}
-		return tabs + "ID: " + inputPost.getId() + tabs + "Account: " + inputPost.getHandle() + tabs + "No. endorsements: " +
+		return tabsminus + part1 + tabs + "ID: " + inputPost.getId() + tabs + "Account: " + inputPost.getHandle() + tabs + "No. endorsements: " +
 				numEndorsements + " | No. comments: " + numComments + tabs + inputPost.getMessage();
 	}
 
