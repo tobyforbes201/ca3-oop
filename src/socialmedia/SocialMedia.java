@@ -206,7 +206,7 @@ public class SocialMedia implements SocialMediaPlatform {
 	}
 
 	@Override
-	public int endorsePost(String handle, int id) //todo doesn't output in correct format
+	public int endorsePost(String handle, int id)
 			throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
 
 		String message;
