@@ -1,8 +1,4 @@
-import socialmedia.AccountIDNotRecognisedException;
-import socialmedia.SocialMedia;
-import socialmedia.IllegalHandleException;
-import socialmedia.InvalidHandleException;
-import socialmedia.SocialMediaPlatform;
+import socialmedia.*;
 
 /**
  * A short program to illustrate an app testing some minimal functionality of a
@@ -35,18 +31,34 @@ public class SocialMediaPlatformTestApp {
 		try {
 			id = platform.createAccount("my_handle");
 			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";
-
+			platform.changeAccountHandle("my_handle", "my_newHandle");
+			platform.createAccount("my_handle");
+			assert (platform.getNumberOfAccounts() == 2) : "number of accounts registered in the system does not match";
+			assert (platform.createPost("my_handle", "Post number 1") == 1) : "id sequencing not as " +
+					"expected (system may still work)";
+			assert (platform.getTotalOriginalPosts() == 1) : "number of posts in the system does not match";
 			platform.removeAccount(id);
 			assert (platform.getNumberOfAccounts() == 0) : "number of accounts registered in the system does not match";
 
 		} catch (IllegalHandleException e) {
 			assert (false) : "IllegalHandleException thrown incorrectly";
+			e.printStackTrace();
 		} catch (InvalidHandleException e) {
 			assert (false) : "InvalidHandleException thrown incorrectly";
+			e.printStackTrace();
 		} catch (AccountIDNotRecognisedException e) {
 			assert (false) : "AccountIDNotRecognizedException thrown incorrectly";
+			e.printStackTrace();
+		} catch (HandleNotRecognisedException e) {
+			assert (false) : "HandleNotRecognisedException thrown incorrectly";
+			e.printStackTrace();
+		} catch (PostIDNotRecognisedException e) {
+			assert (false) : "PostIDNotRecognisedException thrown incorrectly";
+			e.printStackTrace();
+		} catch (InvalidPostException e) {
+			assert (false) : "InvalidPostException thrown incorrectly";
+			e.printStackTrace();
 		}
-
 	}
 
 }

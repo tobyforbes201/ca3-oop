@@ -3,6 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="72ca1a02-32f7-4a2c-a69b-172e2301153a" name="Default Changelist" comment="idk">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ca3/SocialMediaPlatformTestApp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ca3/SocialMediaPlatformTestApp.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SocialMediaPlatformTestApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SocialMediaPlatformTestApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/socialmedia/MiniSocialMediaPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/socialmedia/MiniSocialMediaPlatform.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/socialmedia/SocialMedia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/socialmedia/SocialMedia.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,10 +47,15 @@
     <configuration name="SocialMediaPlatformTestApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="SocialMediaPlatformTestApp" />
       <module name="ca3" />
+      <option name="VM_PARAMETERS" value="-ea" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.SimpleTest" />
+      <item itemvalue="Application.SocialMediaPlatformTestApp" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.SocialMediaPlatformTestApp" />
@@ -190,7 +198,21 @@
       <option name="project" value="LOCAL" />
       <updated>1619698276351</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="idk">
+      <created>1619700008592</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1619700008592</updated>
+    </task>
+    <task id="LOCAL-00020" summary="idk">
+      <created>1619700029686</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1619700029686</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

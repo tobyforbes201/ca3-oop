@@ -57,7 +57,7 @@ public class SocialMedia implements SocialMediaPlatform {
 	}
 
 	@Override
-	public void removeAccount(int id) throws AccountIDNotRecognisedException {
+	public void removeAccount(int id) throws AccountIDNotRecognisedException, PostIDNotRecognisedException {
 		//finds account and removes it
 		for(Account account : accounts){
 			if(account.getId() == id){
@@ -65,11 +65,7 @@ public class SocialMedia implements SocialMediaPlatform {
 
 				for(Post post : posts){
 					if(post.getHandle().equals(account.getHandle())){
-						try {
-							deletePost(post.getId());
-						} catch (PostIDNotRecognisedException e) {
-							e.printStackTrace();
-						}
+						deletePost(post.getId());
 					}
 				}
 				return;
@@ -80,18 +76,14 @@ public class SocialMedia implements SocialMediaPlatform {
 	}
 
 	@Override
-	public void removeAccount(String handle) throws HandleNotRecognisedException {
+	public void removeAccount(String handle) throws HandleNotRecognisedException, PostIDNotRecognisedException {
 		//finds account and removes it
 		for(Account account : accounts){
 			if(account.getHandle().equals(handle)){
 				accounts.remove(account);
 				for(Post post : posts){
 					if(post.getHandle().equals(handle)){
-						try {
-							deletePost(post.getId());
-						} catch (PostIDNotRecognisedException e) {
-							e.printStackTrace();
-						}
+						deletePost(post.getId());
 					}
 				}
 				return;
@@ -363,7 +355,7 @@ public class SocialMedia implements SocialMediaPlatform {
 			if (id == post.getId())
 			{
 				postFound = true;
-				post.setMessage(""); //set the message to blank
+				post.setMessage("The original content was removed from the system and is no longer available."); //set the message to blank
 				post.setDeleted(true); //boolean flag
 
 				//find and delete endorsement posts of this post as well, using the children arraylist in the post
