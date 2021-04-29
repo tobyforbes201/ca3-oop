@@ -198,18 +198,15 @@ public class SocialMedia implements SocialMediaPlatform {
 	 * @param message The string being checked
 	 * @return true if valid, false if not
 	 */
-	private boolean isMessageAccepted(String message)
-	{
-		if(!message.equals(" ") && message.length() <= 100)
-		{
+	private boolean isMessageAccepted(String message) {
+		if(message.trim().length() > 0 && message.length() <= 100) {
 			return true;
 		}
 		return false;
 	}
 
-
 	@Override
-	public int endorsePost(String handle, int id)
+	public int endorsePost(String handle, int id) //todo doesn't output in correct format
 			throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
 
 		String message;
@@ -223,11 +220,20 @@ public class SocialMedia implements SocialMediaPlatform {
 			{
 				if(post instanceof Endorsement)
 				{
+					//cannot endorse an endorsement
 					throw new NotActionablePostException();
 				}
 				else
 				{
 					message = post.getMessage();
+					//header for endorsement
+					String header = "EP@"+post.getHandle()+":";
+					if (message.length() + header.length() > 100)
+					{
+						//make space for header if there isn't enough space
+						int removeNum = message.length() + header.length() + 1 - 100;
+						message = message.substring(0, message.length() - removeNum);
+					}
 					postIDCounter++;
 					posts.add(new Endorsement(handle,message, postIDCounter,id));
 					post.addChild(postIDCounter);
@@ -253,7 +259,6 @@ public class SocialMedia implements SocialMediaPlatform {
 		}
 		//if no post could be found then throw an exception
 		throw new PostIDNotRecognisedException();
-
 	}
 	/**
 	 * A validity checker for post ID, throws error if it is an endorsement or if the post isn't found
@@ -351,22 +356,28 @@ public class SocialMedia implements SocialMediaPlatform {
 	public void deletePost(int id) throws PostIDNotRecognisedException {
 		boolean postFound = false;
 		boolean childPostFound;
+
+		//find the post being deleted
 		for (Post post: posts)
 		{
 			if (id == post.getId())
 			{
 				postFound = true;
-				post.setMessage(null); //set the message to blank
-				post.setDeleted(true);
+				post.setMessage(""); //set the message to blank
+				post.setDeleted(true); //boolean flag
+
+				//find and delete endorsement posts of this post as well, using the children arraylist in the post
 				for (int child : post.getChildren())
 				{
-					childPostFound = false;
 					for (Post childPost: posts)
 					{
-						childPostFound = true;
 						if (child == childPost.getId() && childPost instanceof Endorsement)
 						{
-							childPost.setMessage(null);
+							//delete the endorsement
+							childPost.setMessage("");
+							childPost.setDeleted(true);
+
+							//subtract 1 from the number of endorsements the account has received
 							for (Account account: accounts)
 							{
 								if (account.getHandle().equals(post.getHandle()))
@@ -374,17 +385,14 @@ public class SocialMedia implements SocialMediaPlatform {
 									account.changeEndorsementNum(-1);
 								}
 							}
+							childPost.setHandle("Deleted");
 						}
 					}
-					if (!childPostFound)
-					{
-						throw new PostIDNotRecognisedException();
-					}
 				}
+				post.setHandle("Deleted"); //set the handle to say the deleted status
 			}
 		}
-		if(!postFound)
-		{
+		if(!postFound) {
 			throw new PostIDNotRecognisedException();
 		}
 	}
@@ -519,8 +527,11 @@ public class SocialMedia implements SocialMediaPlatform {
 		//default values
 		int mostEndorsedId = 0;
 		int mostEndorsements = -1;
+
+		//go through the accounts
 		for (Account account: accounts)
 		{
+			//if the account being checked has more endorsements than the current most endorsed, set this one to most endorsed
 			if(account.getEndorsementNum() > mostEndorsements)
 			{
 				mostEndorsedId = account.getId();
