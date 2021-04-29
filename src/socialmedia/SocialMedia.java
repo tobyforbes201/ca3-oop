@@ -351,7 +351,6 @@ public class SocialMedia implements SocialMediaPlatform {
 	@Override
 	public void deletePost(int id) throws PostIDNotRecognisedException {
 		boolean postFound = false;
-		boolean childPostFound;
 
 		//find the post being deleted
 		for (Post post: posts)
@@ -359,7 +358,9 @@ public class SocialMedia implements SocialMediaPlatform {
 			if (id == post.getId())
 			{
 				postFound = true;
-				post.setMessage("The original content was removed from the system and is no longer available."); //set the message to blank
+
+				//set the message to blank
+				post.setMessage("The original content was removed from the system and is no longer available.");
 				post.setDeleted(true); //boolean flag
 
 				//find and delete endorsement posts of this post as well, using the children arraylist in the post
@@ -536,7 +537,8 @@ public class SocialMedia implements SocialMediaPlatform {
 		//go through the accounts
 		for (Account account: accounts)
 		{
-			//if the account being checked has more endorsements than the current most endorsed, set this one to most endorsed
+			//if the account being checked has more endorsements than the current most endorsed,
+			// set this one to most endorsed
 			if(account.getEndorsementNum() > mostEndorsements)
 			{
 				mostEndorsedId = account.getId();

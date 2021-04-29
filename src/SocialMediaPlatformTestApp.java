@@ -47,6 +47,8 @@ public class SocialMediaPlatformTestApp {
 			//System.out.println(platform.showPostChildrenDetails(id));
 			platform.deletePost(comment);
 			//System.out.println(platform.showPostChildrenDetails(id));
+			platform.endorsePost("my_handle", id);
+			assert (platform.getTotalEndorsmentPosts() == 1);
 
 		} catch (IllegalHandleException e) {
 			assert (false) : "IllegalHandleException thrown incorrectly";
