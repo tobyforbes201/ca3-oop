@@ -3,8 +3,6 @@ package socialmedia;
 import java.io.*;
 import java.util.ArrayList;
 
-//todo complete log!
-
 /**
  * BadSocialMedia is a minimally compiling, but non-functioning implementor of
  * the SocialMediaPlatform interface.
