@@ -7,8 +7,8 @@ import java.util.ArrayList;
  * BadSocialMedia is a minimally compiling, but non-functioning implementor of
  * the SocialMediaPlatform interface.
  * 
- * @author Diogo Pacheco
- * @version 1.0
+ * @authors Toby Forbes and Harry Collins
+ * @version 2.1
  */
 public class SocialMedia implements SocialMediaPlatform {
 
@@ -146,7 +146,7 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public String showAccount(String handle) throws HandleNotRecognisedException {
-		//calculates total posts from an account todo what if handle has changed
+		//calculates total posts from an account
 		int totalPosts = 0;
 		for(Post post : posts){
 			if(post.getHandle().equals(handle)){
@@ -200,7 +200,7 @@ public class SocialMedia implements SocialMediaPlatform {
 	 */
 	private boolean isMessageAccepted(String message)
 	{
-		if(message != " " && message.length() <= 100) //todo not correct blank checking
+		if(!message.equals(" ") && message.length() <= 100)
 		{
 			return true;
 		}
@@ -209,7 +209,7 @@ public class SocialMedia implements SocialMediaPlatform {
 
 
 	@Override
-	public int endorsePost(String handle, int id) //todo doesn't output in correct format
+	public int endorsePost(String handle, int id)
 			throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
 
 		String message;
@@ -356,7 +356,7 @@ public class SocialMedia implements SocialMediaPlatform {
 			if (id == post.getId())
 			{
 				postFound = true;
-				post.setMessage(null); //set the message to blank todo I think we might need for it to be "" instead
+				post.setMessage(null); //set the message to blank
 				post.setDeleted(true);
 				for (int child : post.getChildren())
 				{
