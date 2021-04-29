@@ -2,8 +2,6 @@ package socialmedia;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 //todo complete log!
 
@@ -174,7 +172,7 @@ public class SocialMedia implements SocialMediaPlatform {
 
 
 	@Override
-	public int endorsePost(String handle, int id)
+	public int endorsePost(String handle, int id) //todo doesn't output in correct format
 			throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
 
 		String message;
@@ -274,7 +272,7 @@ public class SocialMedia implements SocialMediaPlatform {
 		String part1 = "";
 		String part2 = "";
 		StringBuilder tabs = new StringBuilder();
-		StringBuilder tabsminus = new StringBuilder();
+		StringBuilder tabsLess = new StringBuilder();
 
 		if(indents>0){
 			part1 = "|";
@@ -285,9 +283,9 @@ public class SocialMedia implements SocialMediaPlatform {
 		for(int i = 0; i<indents; i++){
 			tabs.append("\t");
 		}
-		tabsminus.append("\n");
+		tabsLess.append("\n");
 		for(int i = 1; i<indents; i++){
-			tabsminus.append("\t");
+			tabsLess.append("\t");
 		}
 		for(int child : inputPost.getChildren()){
 			for(Post post : posts){
@@ -301,8 +299,9 @@ public class SocialMedia implements SocialMediaPlatform {
 				}
 			}
 		}
-		return tabsminus + part1 + tabsminus + part2 + "ID: " + inputPost.getId() + tabs + "Account: " + inputPost.getHandle() + tabs + "No. endorsements: " +
-				numEndorsements + " | No. comments: " + numComments + tabs + inputPost.getMessage();
+		return tabsLess + part1 + tabsLess + part2 + "ID: " + inputPost.getId() + tabs + "Account: " +
+				inputPost.getHandle() + tabs + "No. endorsements: " + numEndorsements + " | No. comments: " +
+				numComments + tabs + inputPost.getMessage();
 	}
 
 	@Override
@@ -314,7 +313,8 @@ public class SocialMedia implements SocialMediaPlatform {
 			if (id == post.getId())
 			{
 				postFound = true;
-				post.setMessage(null); //set the message to blank
+				post.setMessage(null); //set the message to blank todo I think we might need for it to be "" instead
+				post.setDeleted(true);
 				for (int child : post.getChildren())
 				{
 					childPostFound = false;
@@ -374,10 +374,11 @@ public class SocialMedia implements SocialMediaPlatform {
 		if(getPost(id) instanceof Endorsement){
 			throw new NotActionablePostException();
 		}
-		return builder(getPost(id), new StringBuilder(), 0, new ArrayList<Post>());
+		return builder(getPost(id), new StringBuilder(), 0, new ArrayList<>());
 	}
 
-	public StringBuilder builder(Post post, StringBuilder string, int indent, ArrayList<Post> visited) throws PostIDNotRecognisedException {
+	public StringBuilder builder(Post post, StringBuilder string, int indent, ArrayList<Post> visited)
+			throws PostIDNotRecognisedException {
 		if(post instanceof Endorsement){
 			return string;
 		}
@@ -403,7 +404,7 @@ public class SocialMedia implements SocialMediaPlatform {
 	public int getTotalOriginalPosts() {
 		int counter = 0;
 		for(Post post : posts){
-			if(!(post instanceof Endorsement) && !(post instanceof Comment)){
+			if(!(post instanceof Endorsement) && !(post instanceof Comment) && !post.getDeleted()){
 				counter++;
 			}
 		}
@@ -414,7 +415,7 @@ public class SocialMedia implements SocialMediaPlatform {
 	public int getTotalEndorsmentPosts() {
 		int counter = 0;
 		for(Post post : posts){
-			if(post instanceof Endorsement){
+			if(post instanceof Endorsement && !post.getDeleted()){
 				counter++;
 			}
 		}
@@ -425,7 +426,7 @@ public class SocialMedia implements SocialMediaPlatform {
 	public int getTotalCommentPosts() {
 		int counter = 0;
 		for(Post post : posts){
-			if(post instanceof Comment){
+			if(post instanceof Comment && !post.getDeleted()){
 				counter++;
 			}
 		}
@@ -469,6 +470,7 @@ public class SocialMedia implements SocialMediaPlatform {
 		postIDCounter = 0;
 	}
 
+	//todo check serialisation is correct
 	@Override
 	public void savePlatform(String filename) throws IOException {
 		try {
@@ -483,10 +485,7 @@ public class SocialMedia implements SocialMediaPlatform {
 			objectOut.close();
 		} catch (FileNotFoundException exception) {
 			exception.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
-
 	}
 
 	@Override
@@ -499,10 +498,6 @@ public class SocialMedia implements SocialMediaPlatform {
 			objectIn.close();
 		} catch (FileNotFoundException exception) {
 			exception.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		}
 
 		accounts = (ArrayList<Account>) read.get(0);
@@ -510,5 +505,4 @@ public class SocialMedia implements SocialMediaPlatform {
 		IDCounter = (int) read.get(2);
 		postIDCounter = (int) read.get(3);
 	}
-
 }
