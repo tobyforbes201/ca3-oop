@@ -62,6 +62,16 @@ public class SocialMedia implements SocialMediaPlatform {
 		for(Account account : accounts){
 			if(account.getId() == id){
 				accounts.remove(account);
+
+				for(Post post : posts){
+					if(post.getHandle().equals(account.getHandle())){
+						try {
+							deletePost(post.getId());
+						} catch (PostIDNotRecognisedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
 				return;
 			}
 		}
@@ -75,6 +85,15 @@ public class SocialMedia implements SocialMediaPlatform {
 		for(Account account : accounts){
 			if(account.getHandle().equals(handle)){
 				accounts.remove(account);
+				for(Post post : posts){
+					if(post.getHandle().equals(handle)){
+						try {
+							deletePost(post.getId());
+						} catch (PostIDNotRecognisedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
 				return;
 			}
 		}
@@ -99,6 +118,12 @@ public class SocialMedia implements SocialMediaPlatform {
 		for(Account account : accounts){
 			if(account.getHandle().equals(newHandle)){
 				account.setHandle(newHandle);
+				//changes any posts with the old handle to the old handle
+				for(Post post : posts){
+					if(post.getHandle().equals(oldHandle)){
+						post.setHandle(newHandle);
+					}
+				}
 				return;
 			}
 		}
@@ -471,8 +496,18 @@ public class SocialMedia implements SocialMediaPlatform {
 		int greatestNum = 0;
 		Post mostEndorsed = posts.get(0);
 		for(Post post : posts){
-			if(post.getChildren().size() > greatestNum){
-				greatestNum = post.getChildren().size();
+			int endorseNum = 0;
+			for(int child : post.getChildren()){
+				for(Post post2 : posts){
+					if(post2.getId() == child){
+						if(post2 instanceof Endorsement){
+							endorseNum++;
+						}
+					}
+				}
+			}
+			if(endorseNum > greatestNum){
+				greatestNum = endorseNum;
 				mostEndorsed = post;
 			}
 		}
@@ -503,7 +538,6 @@ public class SocialMedia implements SocialMediaPlatform {
 		postIDCounter = 0;
 	}
 
-	//todo check serialisation is correct
 	@Override
 	public void savePlatform(String filename) throws IOException {
 		try {
