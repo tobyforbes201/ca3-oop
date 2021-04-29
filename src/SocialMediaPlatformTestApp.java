@@ -33,32 +33,37 @@ public class SocialMediaPlatformTestApp {
 			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";
 			platform.changeAccountHandle("my_handle", "my_newHandle");
 			platform.createAccount("my_handle");
+			//System.out.println(platform.showAccount("my_handle"));
 			assert (platform.getNumberOfAccounts() == 2) : "number of accounts registered in the system does not match";
 			assert (platform.createPost("my_handle", "Post number 1") == 1) : "id sequencing not as " +
 					"expected (system may still work)";
 			assert (platform.getTotalOriginalPosts() == 1) : "number of posts in the system does not match";
 			platform.removeAccount(id);
-			assert (platform.getNumberOfAccounts() == 0) : "number of accounts registered in the system does not match";
+			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";
+			assert (platform.getTotalCommentPosts() == 0);
+			int comment = platform.commentPost("my_handle", id, "my first comment");
+			assert (platform.getTotalCommentPosts() == 1);
+			platform.commentPost("my_handle", comment, "comment on a comment");
+			//System.out.println(platform.showPostChildrenDetails(id));
+			platform.deletePost(comment);
+			//System.out.println(platform.showPostChildrenDetails(id));
 
 		} catch (IllegalHandleException e) {
 			assert (false) : "IllegalHandleException thrown incorrectly";
-			e.printStackTrace();
 		} catch (InvalidHandleException e) {
 			assert (false) : "InvalidHandleException thrown incorrectly";
-			e.printStackTrace();
 		} catch (AccountIDNotRecognisedException e) {
 			assert (false) : "AccountIDNotRecognizedException thrown incorrectly";
-			e.printStackTrace();
 		} catch (HandleNotRecognisedException e) {
-			assert (false) : "HandleNotRecognisedException thrown incorrectly";
 			e.printStackTrace();
+			assert (false) : "HandleNotRecognisedException thrown incorrectly";
 		} catch (PostIDNotRecognisedException e) {
 			assert (false) : "PostIDNotRecognisedException thrown incorrectly";
-			e.printStackTrace();
 		} catch (InvalidPostException e) {
 			assert (false) : "InvalidPostException thrown incorrectly";
+		} catch (NotActionablePostException e) {
 			e.printStackTrace();
+			assert (false) : "NotActionablePostException thrown incorrectly";
 		}
 	}
-
 }
