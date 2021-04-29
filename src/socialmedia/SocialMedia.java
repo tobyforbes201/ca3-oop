@@ -14,6 +14,7 @@ import java.util.ArrayList;
  */
 public class SocialMedia implements SocialMediaPlatform {
 
+	//global platform variables
 	ArrayList<Account> accounts = new ArrayList<>();
 	ArrayList<Post> posts = new ArrayList<>();
 	int IDCounter = 0;
@@ -21,14 +22,17 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
+		//checks to see if handle for account is valid
 		if(handle == null || handle.length() > 30 || handle.contains(" ")){
 			throw new InvalidHandleException();
 		}
+		//checks to see if handle is unique
 		for(Account account : accounts){
 			if(account.getHandle().equals(handle)){
 				throw new IllegalHandleException();
 			}
 		}
+		//creates new account
 		IDCounter++;
 		Account newAccount = new Account(handle, null, IDCounter);
 		accounts.add(newAccount);
@@ -37,82 +41,96 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public int createAccount(String handle, String description) throws IllegalHandleException, InvalidHandleException {
+		//checks to see if handle for account is valid
 		if(handle == null || handle.length() > 30 || handle.contains(" ")){
 			throw new InvalidHandleException();
 		}
+		//checks to see if handle is unique
 		for(Account account : accounts){
 			if(account.getHandle().equals(handle)){
 				throw new IllegalHandleException();
 			}
 		}
+		//creates new account (with description)
 		IDCounter++;
-		Account newAccount = new Account(handle, null, IDCounter);
+		Account newAccount = new Account(handle, description, IDCounter);
 		accounts.add(newAccount);
 		return IDCounter;
 	}
 
 	@Override
 	public void removeAccount(int id) throws AccountIDNotRecognisedException {
+		//finds account and removes it
 		for(Account account : accounts){
 			if(account.getId() == id){
 				accounts.remove(account);
 				return;
 			}
 		}
+		//throws error if no matching id
 		throw new AccountIDNotRecognisedException();
 	}
 
 	@Override
 	public void removeAccount(String handle) throws HandleNotRecognisedException {
+		//finds account and removes it
 		for(Account account : accounts){
 			if(account.getHandle().equals(handle)){
 				accounts.remove(account);
 				return;
 			}
 		}
+		//throws error if no matching handle
 		throw new HandleNotRecognisedException();
 	}
 
 	@Override
 	public void changeAccountHandle(String oldHandle, String newHandle)
 			throws HandleNotRecognisedException, IllegalHandleException, InvalidHandleException {
+		//checks new handle is valid
 		if(newHandle == null || newHandle.length() > 30 || newHandle.contains(" ")){
 			throw new InvalidHandleException();
 		}
+		//checks new handle is unique
 		for(Account account : accounts){
 			if(account.getHandle().equals(newHandle)){
 				throw new IllegalHandleException();
 			}
 		}
+		//finds account from old handle and replaces with new handle
 		for(Account account : accounts){
 			if(account.getHandle().equals(newHandle)){
 				account.setHandle(newHandle);
 				return;
 			}
 		}
+		//throws error if no account found
 		throw new HandleNotRecognisedException();
 	}
 
 	@Override
 	public void updateAccountDescription(String handle, String description) throws HandleNotRecognisedException {
+		//finds account and sets the description
 		for(Account account : accounts){
 			if(account.getHandle().equals(handle)){
 				account.setDescription(description);
 				return;
 			}
 		}
+		//throws error if no account found
 		throw new HandleNotRecognisedException();
 	}
 
 	@Override
 	public String showAccount(String handle) throws HandleNotRecognisedException {
+		//calculates total posts from an account todo what if handle has changed
 		int totalPosts = 0;
 		for(Post post : posts){
 			if(post.getHandle().equals(handle)){
 				totalPosts++;
 			}
 		}
-
+		//finds account and outputs the necessary data
 		for(Account account : accounts){
 			if(account.getHandle().equals(handle)){
 				return "\nID: " + account.getId() + "\nHandle: " + account.getHandle() + "\nDescription: "
@@ -120,40 +138,36 @@ public class SocialMedia implements SocialMediaPlatform {
 						account.getEndorsementNum() + "\n";
 			}
 		}
+		//throws error if account isn't found
 		throw new HandleNotRecognisedException();
 	}
 
 	@Override
 	public int createPost(String handle, String message) throws HandleNotRecognisedException, InvalidPostException {
-
-		//if handle is not found throw exception
-		if(!isRealHandle(handle))
-		{
-			throw new HandleNotRecognisedException();
-		}
-
+		//checks there is an account with that handle, throws error if not
+		checkAccount(handle);
+		//checks message is valid, throws error if not
 		if(!isMessageAccepted(message))
 		{
 			throw new InvalidPostException();
 		}
+		//creates new account
 		postIDCounter++;
 		posts.add(new Post(handle,message, postIDCounter));
 		return postIDCounter;
 	}
 
 	/**
-	 * checks if a given handle belongs to any of the accounts
+	 * checks if a given handle belongs to any of the accounts, throws error if not
 	 * @param handle account's handle
-	 * @return true or false
 	 */
-	private boolean isRealHandle(String handle)
-	{
+	public void checkAccount(String handle) throws HandleNotRecognisedException {
 		for(Account account : accounts){
 			if(account.getHandle().equals(handle)){
-				return true;
+				return;
 			}
 		}
-		return false;
+		throw new HandleNotRecognisedException();
 	}
 
 	/**
@@ -176,11 +190,8 @@ public class SocialMedia implements SocialMediaPlatform {
 			throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
 
 		String message;
-
-		if(!isRealHandle(handle))
-		{
-			throw new HandleNotRecognisedException();
-		}
+		//checks there is an account with that handle, throws error if not
+		checkAccount(handle);
 
 		//find the post being endorsed
 		for(Post post:posts)
@@ -221,16 +232,10 @@ public class SocialMedia implements SocialMediaPlatform {
 		throw new PostIDNotRecognisedException();
 
 	}
-
-	public void checkAccount(String handle) throws HandleNotRecognisedException {
-		for(Account account : accounts){
-			if(account.getHandle().equals(handle)){
-				return;
-			}
-		}
-		throw new HandleNotRecognisedException();
-	}
-
+	/**
+	 * A validity checker for post ID, throws error if it is an endorsement or if the post isn't found
+	 * @param id The int id being checked
+	 */
 	public void checkId(int id) throws NotActionablePostException, PostIDNotRecognisedException {
 		for(Post post : posts){
 			if(post.getId() == id){
@@ -247,15 +252,20 @@ public class SocialMedia implements SocialMediaPlatform {
 	@Override
 	public int commentPost(String handle, int id, String message) throws HandleNotRecognisedException,
 			PostIDNotRecognisedException, NotActionablePostException, InvalidPostException {
+		//checks if there is an account with that handle, throws error if not
 		checkAccount(handle);
+		//checks if that inputted post id is valid, throws error if not
 		checkId(id);
+		//checks comment message is valid, throws error if not
 		if(message == null || message.length() > 100){
 			throw new InvalidPostException();
 		}
+		//creates new comment
 		postIDCounter++;
 		Comment newComment = new Comment(handle, message, postIDCounter, id);
 		posts.add(newComment);
 
+		//adds comment as a child of parent post
 		for(Post post : posts){
 			if(post.getId() == id){
 				post.addChild(postIDCounter);
@@ -266,19 +276,23 @@ public class SocialMedia implements SocialMediaPlatform {
 		return postIDCounter;
 	}
 
+	/**
+	 * Turns Post into a String that can be outputted
+	 * @param inputPost the post that needs to be turned into a String
+	 * @param indents the number of indents to place the output to the right of, used to format the output when
+	 *                   creating tree of posts
+	 * @return String of visual interpretation of a post
+	 */
 	public String toString(Post inputPost, int indents) {
-		int numEndorsements = 0;
-		int numComments = 0;
+		//builds the formatting based on input "indents"
 		String part1 = "";
 		String part2 = "";
 		StringBuilder tabs = new StringBuilder();
 		StringBuilder tabsLess = new StringBuilder();
-
 		if(indents>0){
 			part1 = "|";
 			part2 = "| > ";
 		}
-
 		tabs.append("\n");
 		for(int i = 0; i<indents; i++){
 			tabs.append("\t");
@@ -287,6 +301,10 @@ public class SocialMedia implements SocialMediaPlatform {
 		for(int i = 1; i<indents; i++){
 			tabsLess.append("\t");
 		}
+
+		//counts number of comment and endorsements a post has
+		int numEndorsements = 0;
+		int numComments = 0;
 		for(int child : inputPost.getChildren()){
 			for(Post post : posts){
 				if(post.getId() == child){
@@ -299,6 +317,8 @@ public class SocialMedia implements SocialMediaPlatform {
 				}
 			}
 		}
+
+		//builds output
 		return tabsLess + part1 + tabsLess + part2 + "ID: " + inputPost.getId() + tabs + "Account: " +
 				inputPost.getHandle() + tabs + "No. endorsements: " + numEndorsements + " | No. comments: " +
 				numComments + tabs + inputPost.getMessage();
@@ -348,16 +368,22 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public String showIndividualPost(int id) throws PostIDNotRecognisedException {
-		for (Post post: posts)
-		{
-			if (post.getId() == id)
-			{
+		//finds post from id, then returns the post as a String
+		for (Post post: posts) {
+			if (post.getId() == id) {
 				return toString(post, 0);
 			}
 		}
+		//throws error if post not found
 		throw new PostIDNotRecognisedException();
 	}
 
+	/**
+	 * returns post from post id
+	 * @param id of the post you want returned
+	 * @return the post wanted
+	 * @throws PostIDNotRecognisedException when the post isn't found
+	 */
 	public Post getPost(int id) throws PostIDNotRecognisedException {
 		for(Post post : posts) {
 			if (post.getId() == id) {
@@ -370,13 +396,22 @@ public class SocialMedia implements SocialMediaPlatform {
 	@Override
 	public StringBuilder showPostChildrenDetails(int id)
 			throws PostIDNotRecognisedException, NotActionablePostException {
-		System.out.println(posts.get(0));
+		//throws error if endorsement is inputted as an endorsement can't ever have child posts
 		if(getPost(id) instanceof Endorsement){
 			throw new NotActionablePostException();
 		}
 		return builder(getPost(id), new StringBuilder(), 0, new ArrayList<>());
 	}
 
+	/**
+	 * todo finish this javadoc
+	 * @param post
+	 * @param string
+	 * @param indent
+	 * @param visited
+	 * @return
+	 * @throws PostIDNotRecognisedException
+	 */
 	public StringBuilder builder(Post post, StringBuilder string, int indent, ArrayList<Post> visited)
 			throws PostIDNotRecognisedException {
 		if(post instanceof Endorsement){
@@ -387,7 +422,7 @@ public class SocialMedia implements SocialMediaPlatform {
 				string.append(toString(post, indent));
 				visited.add(post);
 			}
-			builder(getPost(child), string, (indent + 1), visited);
+			builder(getPost(child), string, (indent + 1), visited); //recursion is used to traverse the tree
 		}
 		if(post.getChildren().size() == 0){
 			string.append(toString(post, indent));
