@@ -272,11 +272,13 @@ public class SocialMedia implements SocialMediaPlatform {
 		int numEndorsements = 0;
 		int numComments = 0;
 		String part1 = "";
+		String part2 = "";
 		StringBuilder tabs = new StringBuilder();
 		StringBuilder tabsminus = new StringBuilder();
 
 		if(indents>0){
 			part1 = "|";
+			part2 = "| > ";
 		}
 
 		tabs.append("\n");
@@ -299,7 +301,7 @@ public class SocialMedia implements SocialMediaPlatform {
 				}
 			}
 		}
-		return tabsminus + part1 + tabs + "ID: " + inputPost.getId() + tabs + "Account: " + inputPost.getHandle() + tabs + "No. endorsements: " +
+		return tabsminus + part1 + tabsminus + part2 + "ID: " + inputPost.getId() + tabs + "Account: " + inputPost.getHandle() + tabs + "No. endorsements: " +
 				numEndorsements + " | No. comments: " + numComments + tabs + inputPost.getMessage();
 	}
 
@@ -372,15 +374,19 @@ public class SocialMedia implements SocialMediaPlatform {
 		if(getPost(id) instanceof Endorsement){
 			throw new NotActionablePostException();
 		}
-		return builder(getPost(id), new StringBuilder(), 0);
+		return builder(getPost(id), new StringBuilder(), 0, new ArrayList<Post>());
 	}
 
-	public StringBuilder builder(Post post, StringBuilder string, int indent) throws PostIDNotRecognisedException {
+	public StringBuilder builder(Post post, StringBuilder string, int indent, ArrayList<Post> visited) throws PostIDNotRecognisedException {
 		if(post instanceof Endorsement){
 			return string;
 		}
 		for(int child : post.getChildren()){
-			builder(getPost(child), string.append(toString(post, indent)), (indent + 1));
+			if(!visited.contains(post)){
+				string.append(toString(post, indent));
+				visited.add(post);
+			}
+			builder(getPost(child), string, (indent + 1), visited);
 		}
 		if(post.getChildren().size() == 0){
 			string.append(toString(post, indent));

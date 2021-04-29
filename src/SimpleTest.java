@@ -13,6 +13,7 @@ public class SimpleTest {
         System.out.println(postid);
         int commentid = platform.commentPost("Toby2", postid, "wtf");
         System.out.println(commentid);
+        platform.deletePost(commentid);
         System.out.println(platform.commentPost("Toby2", commentid, "part2"));
         System.out.println(platform.commentPost("Toby2", postid, "wtf2"));
         System.out.println(platform.showPostChildrenDetails(postid));
